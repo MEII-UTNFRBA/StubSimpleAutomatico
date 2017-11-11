@@ -1,0 +1,657 @@
+#:kivy 1.0
+#:import Factory kivy.factory.Factory
+
+<PuntoEnGrafico>:
+    size: 7, 7
+    canvas:
+        Color:
+            rgba: (0,1,0,1)
+        Ellipse:
+            pos: self.pos
+            size: self.size
+
+<Main>:
+    punto: punto_graf                                   # Para agregar el punto al Smith
+
+########################################################################################################################
+### Fondo de pantalla, titulos e imagenes ##############################################################################
+########################################################################################################################
+
+# Para setear el color de fondo
+    canvas:
+        Color:
+            rgb: (0.2, 0.2, 0.2)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+# Titulo superior
+    BoxLayout:
+        size_hint: (None,None)
+        size: (600,60)
+        pos_hint: {'center_x':0.43, 'center_y':0.95}
+        Label:
+            size: self.size
+            text: "STUB SIMPLE AUTOMATICO"
+            text_size: self.size
+            font_size: 40
+            color: 1,1,1,1
+            bold: True
+            background_color:
+
+# Imagen de logo de UTN
+    BoxLayout:
+        size_hint: (None, None)
+        size: (200,50)
+        pos_hint: {'center_x':0.867, 'center_y':0.935}
+        AsyncImage:
+            size: self.texture_size
+            source: './Img/UTN_Logo.png'
+#            allow_stretch: True
+
+# Dibujo del diagrama de smith
+    BoxLayout:
+        id: smith
+        size_hint: (None,None)
+        size: (300,300)
+        pos_hint: {'center_x':0.8, 'center_y':0.27}
+        AsyncImage:
+            id:smith_img
+#            opacity: 1
+            size: self.texture_size
+            source: './Img/smith_chart_test.png'
+            allow_stretch: True
+            PuntoEnGrafico:
+                id: punto_graf
+                center: self.parent.center
+
+########################################################################################################################
+### Conexiones con equipos #############################################################################################
+########################################################################################################################
+
+# Boton de conexion con el vna
+    Button:
+        id: vna_connect
+        size_hint: (None, None)
+        height: 30
+        width: 150
+        pos_hint: {'center_x': 0.1, 'center_y':0.87}         # Con esto le digo donde va a estar
+        font_size: 14
+        text: "Conectar con equipo"
+        # border: (0,0,0,0)
+        bold: True
+        text_size: (self.width, self.height)
+        halign: 'center'
+        valign: 'middle'
+        on_press: root.vna_popup()
+
+# Leyenda donde aparece el vna que esta conectado (Desconectado si es que no lo hay)
+    BoxLayout:
+        id: vna_text
+        size_hint: (None,None)
+        size: (240,30)
+        opacity: 1
+        pos_hint: {'center_x':0.35, 'center_y':0.88}
+        Label:
+            size: self.size
+            text: root.vna_showname
+            text_size: self.size
+            color: 1,1,1,1
+            bold: 1
+            background_color:
+
+# Boton de conexion con el arduino
+    Button:
+        id: arduino_connect
+        size_hint: (None, None)
+        height: 30
+        width: 150
+        pos_hint: {'center_x': 0.1, 'center_y':0.82}         # Con esto le digo donde va a estar
+        font_size: 14
+        text: "Conectar con Arduino"
+        # border: (0,0,0,0)
+        bold: True
+        text_size: (self.width, self.height)
+        halign: 'center'
+        valign: 'middle'
+        on_press: root.arduino_popup()
+
+# Leyenda donde aparece el arduino que esta conectado (Desconectado si es que no lo hay)
+    BoxLayout:
+        id: port_text
+        size_hint: (None,None)
+        size: (240,30)
+        opacity: 1
+        pos_hint: {'center_x':0.35, 'center_y':0.83}
+        Label:
+            size: self.size
+            text: root.arduino_conectado
+            text_size: self.size
+            color: 1,1,1,1
+            bold: 1
+            background_color:
+
+#    BoxLayout:
+#        id: angulo_input
+#        size_hint: (None,None)
+#        size: (120,35)
+#        opacity: 1
+#        pos_hint: {'center_x':0.68, 'center_y':0.66}
+#        TextInput:
+#            id: ang_input_text
+#            multiline: False
+#            font_size: 20
+#            on_text_validate: root.ang_sel
+
+#    BoxLayout:
+#        id: angulodeseado_text
+#        size_hint: (None,None)
+#        size: (120,30)
+#        opacity: 1
+#        pos_hint: {'center_x':0.68, 'center_y':0.72}
+#        Label:
+#            size: self.size
+#            text: "Ángulo deseado:"
+#            color: 1,1,1,1
+#            bold: 1
+#            background_color:
+
+#    Button:
+#        id: ok
+#        size_hint: (None, None)
+#        height: 30
+#        width: 120
+#        pos_hint: {'center_x': 0.68, 'center_y':0.6}         # Con esto le digo donde va a estar
+#        font_size: 14
+#        text: "OK"
+#        bold: True
+#        text_size: (self.width, self.height)
+#        halign: 'center'
+#        valign: 'middle'
+#        on_press: root.ang_sel_fnc()
+
+########################################################################################################################
+### Botones de comienzo y parada #######################################################################################
+########################################################################################################################
+
+    Button:
+        id: start
+        size_hint: (None, None)
+        height: 30
+        width: 100
+        pos_hint: {'center_x': 0.42, 'center_y':0.63}         # Con esto le digo donde va a estar
+        font_size: 14
+        text: "Comenzar"
+        bold: True
+        text_size: (self.width, self.height)
+        halign: 'center'
+        valign: 'middle'
+        on_press: root.start_fnc()
+
+    Button:
+        id: stop
+        size_hint: (None, None)
+        height: 30
+        width: 100
+        pos_hint: {'center_x': 0.42, 'center_y':0.58}         # Con esto le digo donde va a estar
+        font_size: 14
+        text: "Detener"
+        bold: True
+        text_size: (self.width, self.height)
+        halign: 'center'
+        valign: 'middle'
+        on_press: root.stop_fnc()
+
+########################################################################################################################
+### Seleccion del stub a utilizar ######################################################################################
+########################################################################################################################
+
+    BoxLayout:
+        id: stub_text
+        size_hint: (None,None)
+        size: (200,30)
+        opacity: 1
+        pos_hint: {'center_x':0.13, 'center_y':0.75}
+        Label:
+            size: self.size
+            text: "Stub a utilizar:"
+            text_size: self.size
+            color: 1,1,1,1
+            bold: 1
+            underline: 1
+            background_color:
+
+    Spinner:
+        id: stub_sel_id
+        size_hint:(None,None)
+        size:(200,30)
+        pos_hint: {'center_x': 0.13, 'center_y':0.67}         # Con esto le digo donde va a estar
+        bold: True
+        text: "Seleccionar"
+        on_text: root.on_stub_selected()
+        on_press: root.on_stub_spinner_clicked()
+
+    Button:
+        id: stub_borrar_id
+        size_hint: (None, None)
+        height: 30
+        width: 200
+        pos_hint: {'center_x': 0.13, 'center_y':0.62}         # Con esto le digo donde va a estar
+        font_size: 14
+        text: "Borrar stub"
+        bold: True
+        text_size: (self.width, self.height)
+        halign: 'center'
+        valign: 'middle'
+        on_press: root.stub_borrar()
+########################################################################################################################
+### Seleccion del puerto a utilizar del vna ############################################################################
+########################################################################################################################
+
+    BoxLayout:
+        id: calibracion_puerto_text
+        size_hint: (None,None)
+        size: (200,30)
+        opacity: 1
+        pos_hint: {'center_x':0.13, 'center_y':0.55}
+        Label:
+            size: self.size
+            text: "Puerto del VNA a utilizar:"
+            text_size: self.size
+            color: 1,1,1,1
+            bold: 1
+            underline: 1
+            background_color:
+
+    CheckBox:
+        id: calibracion_seteo_puerto1
+        size_hint: (None, None)
+        size: (20,20)
+#        height: '68dp'
+        pos_hint: {'center_x':0.015, 'center_y':0.49}
+        active: True
+        group: 'puerto_sel'
+        allow_no_selection: False
+
+    BoxLayout:
+        id: calibracion_seteo_puerto1_text
+        size_hint: (None,None)
+        size: (200,30)
+        pos_hint: {'center_x':0.16, 'center_y':0.5}
+        Label:
+            size: self.size
+            text: "Puerto 1"
+            text_size: self.size
+            color: 1,1,1,1
+            bold: True
+            background_color:
+
+    CheckBox:
+        id: calibracion_seteo_puerto2
+        size_hint: (None, None)
+        size: (20,20)
+#        height: '48dp'
+        pos_hint: {'center_x':0.015, 'center_y':0.44}
+        active: False
+        group: 'puerto_sel'
+        allow_no_selection: False
+
+    BoxLayout:
+        id: calibracion_seteo_puerto2_text
+        size_hint: (None,None)
+        size: (200,30)
+        pos_hint: {'center_x':0.16, 'center_y':0.45}
+        Label:
+            size: self.size
+            text: "Puerto 2"
+            text_size: self.size
+            color: 1,1,1,1
+            bold: True
+            background_color:
+
+########################################################################################################################
+### Seleccion del modo de operacion ####################################################################################
+########################################################################################################################
+
+    BoxLayout:
+        id: operation_text
+        size_hint: (None,None)
+        size: (200,30)
+        opacity: 1
+        pos_hint: {'center_x':0.13, 'center_y':0.4}
+        Label:
+            size: self.size
+            text: "Modo de operación deseado:"
+            text_size: self.size
+            color: 1,1,1,1
+            bold: 1
+            underline: 1
+            background_color:
+
+# Calibracion de precision
+    CheckBox:
+        id: calibracionprecision_checkbox
+        size_hint: (None,None)
+        size: (20,20)
+#        size_hint_y: None
+#        height: '48dp'
+        pos_hint: {'center_x': 0.015, 'center_y': 0.34}
+        active: True
+        group: 'operation_mode'
+        allow_no_selection: False
+
+    BoxLayout:
+        id: calibracionprecision_text
+        size_hint: (None,None)
+        size: (200,30)
+        pos_hint: {'center_x':0.16, 'center_y':0.35}
+        Label:
+            size: self.size
+            text: "Calibracion de precisión"
+            text_size: self.size
+            color: 1,1,1,1
+            bold: True
+            background_color:
+
+# Calibracion rapida
+    CheckBox:
+        id: calibracionrapida_checkbox
+        size_hint: (None,None)
+        size: (20,20)
+#        size_hint_y: None
+#        height: '48dp'
+        pos_hint: {'center_x': 0.015, 'center_y': 0.29}
+        group: 'operation_mode'
+        allow_no_selection: False
+
+    BoxLayout:
+        id: calibracionrapida_text
+        size_hint: (None,None)
+        size: (200,30)
+        pos_hint: {'center_x':0.16, 'center_y':0.3}
+        Label:
+            size: self.size
+            text: "Calibracion rápida"
+            text_size: self.size
+            color: 1,1,1,1
+            bold: True
+            background_color:
+
+# Lazo abierto de precision
+    CheckBox:
+        id: openloopprecision_checkbox
+        size_hint: (None,None)
+        size: (20,20)
+#        size_hint_y: None
+#        height: '48dp'
+        pos_hint: {'center_x': 0.015, 'center_y': 0.24}
+        active: False
+        group: 'operation_mode'
+        allow_no_selection: False
+
+    BoxLayout:
+        id: openloopprecision_text
+        size_hint: (None,None)
+        size: (200,30)
+        pos_hint: {'center_x':0.16, 'center_y':0.25}
+        Label:
+            size: self.size
+            text: "Lazo abierto de precisión"
+            text_size: self.size
+            color: 1,1,1,1
+            bold: True
+            background_color:
+
+# Lazo abierto rapido
+    CheckBox:
+        id: openlooprapido_checkbox
+        size_hint: (None,None)
+        size: (20,20)
+#        size_hint_y: None
+#        height: '48dp'
+        pos_hint: {'center_x': 0.015, 'center_y': 0.19}
+        active: False
+        group: 'operation_mode'
+        allow_no_selection: False
+
+    BoxLayout:
+        id: openlooprapido_text
+        size_hint: (None,None)
+        size: (200,30)
+        pos_hint: {'center_x':0.16, 'center_y':0.2}
+        Label:
+            size: self.size
+            text: "Lazo abierto rápido"
+            text_size: self.size
+            color: 1,1,1,1
+            bold: True
+            background_color:
+
+########################################################################################################################
+### Seteo de frecuencia ################################################################################################
+########################################################################################################################
+
+    BoxLayout:
+        id: freq_text
+        size_hint: (None,None)
+        size: (150,30)
+        pos_hint: {'center_x':0.42, 'center_y':0.5}
+        Label:
+            size: self.size
+            text: "Frecuencia:"
+            text_size: self.size
+            color: 1,1,1,1
+            bold: True
+            underline: True
+            background_color:
+
+    Spinner:
+        id: frec_precision
+        size_hint:(None,None)
+        size:(120,30)
+        pos_hint: {'center_x': 0.44, 'center_y':0.43}         # Con esto le digo donde va a estar
+        text: "Seleccionar"
+        on_text: root.on_frec_spinner_selected()
+        on_press: root.on_frec_spinner_clicked()
+
+    BoxLayout:
+        id: freq_input
+        size_hint: (None,None)
+        size:(80,35)
+        opacity: 1
+        pos_hint: {'center_x':0.42, 'center_y':0.37}
+        TextInput:
+            id: freq_input_text
+            multiline: False
+            font_size: 20
+#            on_text_validate: root.openlooprapido_freq_input
+
+    BoxLayout:
+        id: freq_text_unidad
+        size_hint: (None,None)
+        size: (30,30)
+        pos_hint: {'center_x':0.5, 'center_y':0.37}
+        Label:
+            size: self.size
+            text: "GHz"
+            text_size: self.size
+            color: 1,1,1,1
+            bold: True
+            background_color:
+
+########################################################################################################################
+### Seleccion de componente o angulo en si #############################################################################
+########################################################################################################################
+
+    BoxLayout:
+        id: angcomp_text
+        size_hint: (None,None)
+        size: (150,30)
+        pos_hint: {'center_x':0.42, 'center_y':0.3}
+        Label:
+            size: self.size
+            text: "Ángulo/Componente:"
+            text_size: self.size
+            color: 1,1,1,1
+            bold: True
+            underline: True
+            background_color:
+
+# Input de lo que se quiera
+    BoxLayout:
+        id: angcomp_input
+        size_hint: (None,None)
+        size: (80,35)
+        opacity: 1
+        pos_hint: {'center_x':0.42, 'center_y':0.2}
+        TextInput:
+            id: angcomp_input_text
+            multiline: False
+            font_size: 20
+#            on_text_validate: root.openlooprapido_freq_input
+
+    CheckBox:
+        id: angcomp_seteo_angulo
+        size_hint: (None, None)
+        size: (20,20)
+#        height: '48dp'
+        pos_hint: {'center_x': 0.5, 'center_y': 0.24}
+        group: 'component_sel'
+        active: True
+        allow_no_selection: False
+
+    BoxLayout:
+        id: angcomp_seteo_angulo_text
+        size_hint: (None,None)
+        size: (150,30)
+        pos_hint: {'center_x':0.61, 'center_y':0.25}
+        Label:
+            size: self.size
+            text: "Áng [°]"
+            text_size: self.size
+            color: 1,1,1,1
+            bold: True
+            background_color:
+
+    CheckBox:
+        id: angcomp_seteo_capacitor
+        size_hint: (None, None)
+        size: (20,20)
+        #height: '48dp'
+        pos_hint: {'center_x': 0.5, 'center_y': 0.19}
+        active: False
+        group: 'component_sel'
+        allow_no_selection: False
+
+    BoxLayout:
+        id: angcomp_seteo_c_text
+        size_hint: (None,None)
+        size: (150,30)
+        pos_hint: {'center_x':0.61, 'center_y':0.2}
+        Label:
+            size: self.size
+            text: "C [pF]"
+            text_size: self.size
+            color: 1,1,1,1
+            bold: True
+            background_color:
+
+    CheckBox:
+        id: angcomp_seteo_inductor
+        size_hint: (None, None)
+        size: (20,20)
+#        height: '48dp'
+        pos_hint: {'center_x': 0.5, 'center_y': 0.14}
+        active: False
+        group: 'component_sel'
+        allow_no_selection: False
+
+    BoxLayout:
+        id: angcomp_seteo_l_text
+        size_hint: (None,None)
+        size: (150,30)
+        pos_hint: {'center_x':0.61, 'center_y':0.15}
+        Label:
+            size: self.size
+            text: "L [nH]"
+            text_size: self.size
+            color: 1,1,1,1
+            bold: True
+            background_color:
+
+########################################################################################################################
+### Mediciones #########################################################################################################
+########################################################################################################################
+
+    BoxLayout:
+        id: mediciones_text
+        size_hint: (None,None)
+        size: (300,30)
+        opacity: 1
+        pos_hint: {'center_x':0.8, 'center_y':0.78}
+        Label:
+            size: self.size
+            text: "Mediciones:"
+            text_size: self.size
+            color: 1,1,1,1
+            bold: 1
+            underline: 1
+            background_color:
+
+    BoxLayout:
+        id: modulo_text
+        size_hint: (None,None)
+        size: (260,30)
+        opacity: 1
+        pos_hint: {'center_x':0.8, 'center_y':0.72}
+
+        Label:
+            size: self.size
+            text: root.modulo_out
+            text_size: self.size
+            color: 1,1,1,1
+            bold: 1
+            background_color:
+
+    BoxLayout:
+        id: angulo_text
+        size_hint: (None,None)
+        size: (260,30)
+ #       opacity: 1
+        pos_hint: {'center_x':0.8, 'center_y':0.66}
+        Label:
+            size: self.size
+            text: root.angulo_out
+            text_size: self.size
+            color: 1,1,1,1
+            bold: True
+            background_color:
+
+    BoxLayout:
+        id: z_text
+        size_hint: (None,None)
+        size: (260,30)
+        pos_hint: {'center_x':0.8, 'center_y':0.6}
+        Label:
+            size: self.size
+            text: root.z_out
+            text_size: self.size
+            color: 1,1,1,1
+            bold: True
+            background_color:
+
+
+
+    BoxLayout:
+        id: materia_anio
+        size_hint: (None,None)
+        size: (150,30)
+        pos_hint: {'center_x':0.35, 'center_y':0.05}
+        Label:
+            size: self.size
+            text: "MEII-2017"
+#            text_size: self.size
+            font_size: 28
+            color: 1,1,1,1
+            bold: True
+            background_color:
