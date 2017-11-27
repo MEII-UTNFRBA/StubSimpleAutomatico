@@ -1,4 +1,4 @@
-('d:\\mongo\\build\\StubSimpleAutomatico\\out00-PYZ.pyz',
+('d:\\Program Files\\MEII\\Python_Projects\\Repo_PCapp\\StubSimpleAutomatico\\build\\StubSimpleAutomatico\\out00-PYZ.pyz',
  [('os', 'd:\\Python27\\lib\\os.py', 'PYMODULE'),
   ('copy_reg', 'd:\\Python27\\lib\\copy_reg.py', 'PYMODULE'),
   ('types', 'd:\\Python27\\lib\\types.py', 'PYMODULE'),

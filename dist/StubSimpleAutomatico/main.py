@@ -351,6 +351,7 @@ class Main(FloatLayout):
             self.m1_s1_state = 0
             self.pasos_realizados = 10
             self.pasos_mover = 100
+        self.serie_arduino.read(50)
 #        else:
 #            try:
 #                time.sleep(10)
@@ -383,20 +384,25 @@ class Main(FloatLayout):
     def m1_s1_leer(self):
         if self.serie_arduino.inWaiting() > 0:
             lectura_serial = self.serie_arduino.readline()  # Leo lo que haya en la cola
+            print lectura_serial
             #print "leo cuando termina los pasos y cuanto hizo"
             #print lectura_serial
             lectura_serial = string.replace(lectura_serial, "I", "")
             lectura_serial = string.replace(lectura_serial, "F\n", "")
-            if int(lectura_serial) < self.pasos_realizados:
-                self.serie_arduino.write("STOP\n")
-                #print "menos pasos"
-                pasos_restante = int(self.pasos_mover) - int(lectura_serial)
-                #print pasos_restante
-                self.pasos_realizados = pasos_restante
-                self.serie_arduino.read(20)
-                self.serie_arduino.write("I%sF\n" % pasos_restante)
-                lectura_serial = self.serie_arduino.readline()
-                #print lectura_serial
+            if lectura_serial.isdigit():
+                if int(lectura_serial) < self.pasos_realizados:
+                    self.serie_arduino.write("STOP\n")
+                    #print "menos pasos"
+                    pasos_restante = int(self.pasos_mover) - int(lectura_serial)
+                    #print pasos_restante
+                    self.pasos_realizados = pasos_restante
+                    self.serie_arduino.read(20)
+                    self.serie_arduino.write("I%sF\n" % pasos_restante)
+                    lectura_serial = self.serie_arduino.readline()
+                    #print lectura_serial
+                else:
+                    self.m1_s1_state = 1
+                    self.flag_delay = 0
             else:
                 self.m1_s1_state = 1
                 self.flag_delay = 0
@@ -643,6 +649,7 @@ class Main(FloatLayout):
     def mode2_switch2(self):
         self.serie_arduino.read(20)
         self.serie_arduino.write("I%sU\n" % int(self.pasos_mover))
+        self.serie_arduino.read(50)
         #self.serie_arduino.write("I200U\n")
         #print self.serie_arduino.readline()
         self.pasos_realizados = self.pasos_mover
@@ -652,6 +659,9 @@ class Main(FloatLayout):
         if self.serie_arduino.inWaiting() > 0:
             self.arduino_read = self.serie_arduino.readline()  # Leo lo que haya en la cola
             #print self.arduino_read
+            self.arduino_read = string.replace(self.arduino_read, "I", "")
+            self.arduino_read = string.replace(self.arduino_read, "F\n", "")
+            print self.arduino_read
             if int(self.arduino_read) < self.pasos_realizados:
                 self.serie_arduino.write("STOP\n")
                 #print "menos pasos"
@@ -1878,7 +1888,6 @@ class Main(FloatLayout):
     def stop_fnc(self):
         self.start = 0
         self.serie_arduino.write("STOP\n")
-        a = self.serie_arduino.read(999)
         self.serie_arduino.close()
         if self.mode_state < 2:
             self.inst.close()

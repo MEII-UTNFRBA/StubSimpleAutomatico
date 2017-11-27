@@ -1,5 +1,6 @@
-(['..\\Program Files\\MEII\\Python_Projects\\DesktopAppPython\\main.py'],
- ['d:\\Program Files\\MEII\\Python_Projects\\DesktopAppPython', 'd:\\mongo'],
+(['..\\..\\DesktopAppPython\\main.py'],
+ ['d:\\Program Files\\MEII\\Python_Projects\\DesktopAppPython',
+  'd:\\Program Files\\MEII\\Python_Projects\\Repo_PCapp\\StubSimpleAutomatico'],
  ['codecs'],
  [],
  [],
